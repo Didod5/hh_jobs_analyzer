@@ -1,5 +1,6 @@
 *.png
 env_hh
+chromedriver114_linux64
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
