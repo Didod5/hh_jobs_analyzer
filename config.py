@@ -1,0 +1,3 @@
+driver_path = 'chromedriver114_linux64/chromedriver'
+url = 'https://samara.hh.ru/search/vacancy?no_magic=true&L_save_area=true&text=python+%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%87%D0%B8%D0%BA&search_field=name&search_field=company_name&excluded_text=%D0%A1%2B%2B&salary=&currency_code=RUR&experience=between1And3&schedule=remote&order_by=relevance&search_period=0&items_on_page=5'
+min_num_of_repeat = 0

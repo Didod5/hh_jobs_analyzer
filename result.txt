@@ -1,0 +1,1 @@
+Python,Django Framework,PostgreSQL,REST,Git,Python,SQL,Git,Django,CI/CD,REST API,SQL,NoSQL,Python,Английский — B2 — Средне-продвинутый,Python,Python,PostgreSQL,Git,Docker,Elasticsearch
