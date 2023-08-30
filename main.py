@@ -4,32 +4,38 @@ from selenium.webdriver.common.by import By
 from config import *
 from bs4 import BeautifulSoup
 import matplotlib.pyplot as plt
+import time
 
 
 def collection_of_link():
-    vacancies = driver.find_elements(By.CLASS_NAME, "serp-item__title")
-    driver.execute_script('window.scrollBy(0,document.body.scrollHeight)')
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
-    vacancies = soup.findAll('a', class_='serp-item__title')
-    vacancies = [vac['href'] for vac in vacancies]
-    return vacancies
+    try:
+        vacancies = driver.find_elements(By.CLASS_NAME, "serp-item__title")
+        driver.execute_script('window.scrollBy(0,document.body.scrollHeight)')
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        vacancies = soup.findAll('a', class_='serp-item__title')
+        vacancies = [vac['href'] for vac in vacancies]
+        print('links succesful collected')
+        return vacancies
+    except:
+        print('links collecting error')
 
 def collection_data(links):
     result = []
     for link in links:
+        start = time.time()
         driver.get(link)
         driver.implicitly_wait(1)
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         text = soup.findAll('span', class_="bloko-tag__section bloko-tag__section_text")
         text = [el.text for el in text]
         result.append(text)
-        # driver.close()
-        driver.implicitly_wait(5)
-        print('Vacancy is processed')
+        driver.implicitly_wait(1)
+        end = time.time() - start
+        print(f'Vacancy is processed, {end}')
 
-    with open('result.txt', 'w') as f:
+    with open('result.txt', 'a') as f:
         f.write(','.join(','.join(sub_l) for sub_l in result))
-
+    
 def data_processing():
     with open('result.txt', 'r') as f:
         data = f.read()
@@ -54,7 +60,7 @@ def data_processing():
         del d[key]
     d['Django'] = temp
 
-    d_new = {k: v for k, v in d.items() if v > min_num_of_repeat}
+    d_new = {k: v for k, v in d.items() if v > min_num_of_repeat - 1}
     labels = list(d_new.keys())
     values = list(d_new.values())
     plt.pie(values, labels=labels, autopct='%.2f')
@@ -70,6 +76,7 @@ def make_pic():
 
     
 if __name__ == '__main__':
+    start = time.time()
     options = webdriver.ChromeOptions()
     options.add_argument("--headless=new")
     service = ChromeService(executable_path=driver_path)
@@ -77,5 +84,8 @@ if __name__ == '__main__':
     driver.get(url=url)
 
     collection_data(collection_of_link())
+    driver.close
     data_processing()
     make_pic()
+    end = time.time() - start
+    print(f'Running time: {end} sec')
